@@ -130,6 +130,28 @@ func (c *Client) initWsdl() {
 	if c.definitionsErr == nil {
 		c.URL = strings.TrimSuffix(c.Definitions.TargetNamespace, "/")
 	}
+
+	for _, portType := range c.Definitions.PortTypes {
+		for _, operation := range portType.Operations {
+			if len(operation.Soap2Operations) > 0 {
+				operation.SoapOperations = append(operation.SoapOperations, operation.Soap2Operations...)
+			}
+		}
+	}
+
+	for _, binding := range c.Definitions.Bindings {
+		if len(binding.Soap2Bindings) > 0 {
+			binding.SoapBindings = append(binding.SoapBindings, binding.Soap2Bindings...)
+		}
+	}
+
+	for _, service := range c.Definitions.Services {
+		for _, port := range service.Ports {
+			if len(port.Soap2Addresses) > 0 {
+				port.SoapAddresses = append(port.SoapAddresses, port.Soap2Addresses...)
+			}
+		}
+	}
 }
 
 // SetWSDL set WSDL url

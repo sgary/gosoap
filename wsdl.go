@@ -23,10 +23,11 @@ type wsdlDefinitions struct {
 }
 
 type wsdlBinding struct {
-	Name         string           `xml:"name,attr"`
-	Type         string           `xml:"type,attr"`
-	Operations   []*wsdlOperation `xml:"http://schemas.xmlsoap.org/wsdl/ operation"`
-	SoapBindings []*soapBinding   `xml:"http://schemas.xmlsoap.org/wsdl/soap/ binding"`
+	Name          string           `xml:"name,attr"`
+	Type          string           `xml:"type,attr"`
+	Operations    []*wsdlOperation `xml:"http://schemas.xmlsoap.org/wsdl/ operation"`
+	SoapBindings  []*soapBinding   `xml:"http://schemas.xmlsoap.org/wsdl/soap/ binding"`
+	Soap2Bindings []*soapBinding   `xml:"http://schemas.xmlsoap.org/wsdl/soap12/ binding"`
 }
 
 type soapBinding struct {
@@ -58,11 +59,12 @@ type wsdlPortTypes struct {
 }
 
 type wsdlOperation struct {
-	Name           string                 `xml:"name,attr"`
-	Inputs         []*wsdlOperationInput  `xml:"http://schemas.xmlsoap.org/wsdl/ input"`
-	Outputs        []*wsdlOperationOutput `xml:"http://schemas.xmlsoap.org/wsdl/ output"`
-	Faults         []*wsdlOperationFault  `xml:"http://schemas.xmlsoap.org/wsdl/ fault"`
-	SoapOperations []*soapOperation       `xml:"http://schemas.xmlsoap.org/wsdl/soap/ operation"`
+	Name            string                 `xml:"name,attr"`
+	Inputs          []*wsdlOperationInput  `xml:"http://schemas.xmlsoap.org/wsdl/ input"`
+	Outputs         []*wsdlOperationOutput `xml:"http://schemas.xmlsoap.org/wsdl/ output"`
+	Faults          []*wsdlOperationFault  `xml:"http://schemas.xmlsoap.org/wsdl/ fault"`
+	SoapOperations  []*soapOperation       `xml:"http://schemas.xmlsoap.org/wsdl/soap/ operation"`
+	Soap2Operations []*soapOperation       `xml:"http://schemas.xmlsoap.org/wsdl/soap12/ operation"`
 }
 
 type wsdlOperationInput struct {
@@ -87,9 +89,10 @@ type wsdlService struct {
 }
 
 type wsdlPort struct {
-	Name          string         `xml:"name,attr"`
-	Binding       string         `xml:"binding,attr"`
-	SoapAddresses []*soapAddress `xml:"http://schemas.xmlsoap.org/wsdl/soap/ address"`
+	Name           string         `xml:"name,attr"`
+	Binding        string         `xml:"binding,attr"`
+	SoapAddresses  []*soapAddress `xml:"http://schemas.xmlsoap.org/wsdl/soap/ address" `
+	Soap2Addresses []*soapAddress `xml:"http://schemas.xmlsoap.org/wsdl/soap12/ address"`
 }
 
 type soapAddress struct {
