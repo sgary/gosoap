@@ -1,6 +1,7 @@
 package gosoap
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"reflect"
@@ -112,9 +113,16 @@ func (tokens *tokenData) recursiveEncode(hm interface{}) {
 		content := xml.Directive(fmt.Sprintf("[CDATA[%s]]", str))
 		tokens.data = append(tokens.data, content)
 	case reflect.Pointer:
-		str, _ := xml.Marshal(v.Interface())
-		content := xml.Directive(fmt.Sprintf("[CDATA[%s]]", str))
-		tokens.data = append(tokens.data, content)
+		element := v.Elem()
+		// 检查v现在是否是结构体
+		if element.Kind() == reflect.Struct {
+			str, _ := json.Marshal(element.Interface())
+			content := xml.Directive(fmt.Sprintf("[CDATA[%s]]", str))
+			tokens.data = append(tokens.data, content)
+		} else {
+			content := xml.CharData(element.String())
+			tokens.data = append(tokens.data, content)
+		}
 	}
 }
 
