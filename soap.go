@@ -102,7 +102,12 @@ type Client struct {
 
 // Call call's the method m with Params p
 func (c *Client) Call(m string, p SoapParams) (res *Response, err error) {
-	return c.Do(NewRequest(m, p))
+	return c.Do(NewRequest(m, p, nil))
+}
+
+// Call call's the method m with Params p
+func (c *Client) Call2(m string, p SoapParams, u map[string]string) (res *Response, err error) {
+	return c.Do(NewRequest(m, p, u))
 }
 
 // CallByStruct call's by struct
@@ -206,8 +211,18 @@ func (c *Client) Do(req *Request) (res *Response, err error) {
 	if err != nil {
 		return nil, err
 	}
+	url := c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location
+	if req.UrlParams != nil {
+		for k, v := range req.UrlParams {
+			if strings.Contains(url, "?") {
+				url = fmt.Sprintf("%s&%s=%s", url, k, v)
+			} else {
+				url = fmt.Sprintf("%s?%s=%s", url, k, v)
+			}
+		}
+	}
 
-	b, err := p.doRequest(c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location)
+	b, err := p.doRequest(url)
 	if err != nil {
 		return nil, ErrorWithPayload{err, p.Payload}
 	}

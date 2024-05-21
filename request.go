@@ -6,14 +6,16 @@ import (
 
 // Request Soap Request
 type Request struct {
-	Method string
-	Params SoapParams
+	Method    string
+	Params    SoapParams
+	UrlParams map[string]string
 }
 
-func NewRequest(m string, p SoapParams) *Request {
+func NewRequest(m string, p SoapParams, u map[string]string) *Request {
 	return &Request{
-		Method: m,
-		Params: p,
+		Method:    m,
+		Params:    p,
+		UrlParams: u,
 	}
 }
 
